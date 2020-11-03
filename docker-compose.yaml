@@ -7,7 +7,7 @@ services:
     ports:
       - 3000:3000
     networks:
-      - monitoring_network
+      - monitoring
     volumes:
       - grafana-volume:/var/lib/grafana
   influxdb:
@@ -17,11 +17,11 @@ services:
     ports:
       - 8086:8086
     networks:
-      - monitoring_network
+      - monitoring
     volumes:
       - influxdb-volume:/var/lib/influxdb
 networks:
-  monitoring_network:
+  monitoring:
 volumes:
   grafana-volume:
     external: true
