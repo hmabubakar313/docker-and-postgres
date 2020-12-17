@@ -19,6 +19,7 @@ ENV GF_DATABASE_TYPE=sqlite3
 COPY system/99fixbadproxy /etc/apt/apt.conf.d/99fixbadproxy
 
 WORKDIR /root
+# RUN mkdir /usr/share/collectd
 
 # Clear previous sources
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" && \
@@ -45,10 +46,12 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" && \
         supervisor \
         wget \
         gnupg \
+   
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y nodejs \
     && mkdir -p /var/log/supervisor \
     && rm -rf .profile \
+    
     # Install InfluxDB
     && wget --no-verbose https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_${ARCH}.deb \
     && dpkg -i influxdb_${INFLUXDB_VERSION}_${ARCH}.deb \
@@ -72,8 +75,17 @@ COPY bash/profile .profile
 COPY influxdb/influxdb.conf /etc/influxdb/influxdb.con
 # RUN  systemctl status influxd 
 RUN  influx --version
-RUN influxd
-RUN influx
+ENV ADMIN_USER root
+ENV INFLUXDB_INIT_PWD root
+ENV PRE_CREATE_DB **None**
+
+# RUN influxd
+# RUN systemctl start influxdb
+# RUN show databases
+# RUN create database test
+# RUN show databases
+# RUN influx config
+# RUN influx config local-config
 
 # RUN influx -username admin -password 123
 # RUN Show databases
