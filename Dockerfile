@@ -46,12 +46,10 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" && \
         supervisor \
         wget \
         gnupg \
-   
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y nodejs \
     && mkdir -p /var/log/supervisor \
     && rm -rf .profile \
-    
     # Install InfluxDB
     && wget --no-verbose https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_${ARCH}.deb \
     && dpkg -i influxdb_${INFLUXDB_VERSION}_${ARCH}.deb \
@@ -78,7 +76,9 @@ RUN  influx --version
 ENV ADMIN_USER root
 ENV INFLUXDB_INIT_PWD root
 ENV PRE_CREATE_DB **None**
-
+# CMD ["influxd"]
+# CMD [ "Create database test" ]
+# CMD [ "show databases" ]
 # RUN influxd
 # RUN systemctl start influxdb
 # RUN show databases
